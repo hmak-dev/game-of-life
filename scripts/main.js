@@ -10,7 +10,7 @@ const config = {
     liveEdit: false,
     loopEdges: true,
 
-    cellSize: 20,
+    cellSize: 26,
     cellGap: 1,
 
     colors: {
@@ -271,10 +271,24 @@ function initGUI() {
     guidesList.appendChild(Object.assign(document.createElement('li'), { className: 'cr string', innerHTML: 'Hide Controls [H]' }));
 }
 
+function initGlider() {
+    const { generation, count } = state;
+
+    const cx = Math.floor(count.x / 2);
+    const cy = Math.floor(count.y / 2);
+
+    generation[cy - 1][cx] = true;
+    generation[cy][cx + 1] = true;
+    generation[cy + 1][cx - 1] = true;
+    generation[cy + 1][cx] = true;
+    generation[cy + 1][cx + 1] = true;
+}
+
 function init() {
     initGUI();
 
     initGeneration();
+    initGlider();
 
     drawCells();
 
@@ -286,6 +300,8 @@ function init() {
     document.addEventListener('keydown', handleKeyboard);
 
     document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    document.documentElement.style.backgroundColor = config.colors.background;
 }
 
 init();
