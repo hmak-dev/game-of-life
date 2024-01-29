@@ -21,7 +21,11 @@ The game will start with a `Glider` pattern. Of course, You are able to draw any
 wish and start the game. Then you just need to sit back and watch how it evolves and how generations
 will change over time.
 
-There are also GUI controls which you can adjust game settings such as speed, cell size, etc.
+There are also GUI controls which you can adjust game settings such as update interval,
+cell size, cell gap, etc.
+
+Use the `left click` to draw and `right click` to erase. However, on touch devices the default 
+behavior is drawing and you need to enable the eraser mode from the GUI controls.
 
 If you are using a keyboard input you can also use the following shortcut keys:
 
@@ -34,3 +38,6 @@ If you are using a keyboard input you can also use the following shortcut keys:
 
 ## Credits
 Special thanks to [dat.gui](https://github.com/dataarts/dat.gui) for the GUI controls library.
+
+## Demo
+A live demo of this game can be found at [Game of Life](https://hmak-dev.github.io/game-of-life).
