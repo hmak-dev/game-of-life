@@ -150,7 +150,7 @@ function handleMouse(e) {
             const i = Math.floor((y - offset.y) / (config.cellSize + config.cellGap));
 
             if (checkIndex(i, j)) {
-                handleSwitchCell(i, j, e.buttons === 1 || !isErasing);
+                handleSwitchCell(i, j, !(isErasing || e.buttons === 2));
             }
         }
     }
