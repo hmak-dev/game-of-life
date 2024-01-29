@@ -28,6 +28,8 @@ const state = {
 
     isPlaying: false,
     intervalId: null,
+
+    isErasing: false,
 };
 
 function makeGeneration(xCount, yCount) {
@@ -132,18 +134,23 @@ function handleSwitchCell(i, j, alive) {
 }
 
 function handleMouse(e) {
-    if (!state.isPlaying || config.liveEdit) {
-        if (e.buttons === 1 || e.buttons === 2) {
-            const x = e.pageX;
-            const y = e.pageY;
+    e.preventDefault();
+    e.stopPropagation();
 
-            const { offset } = state;
+    if (!state.isPlaying || config.liveEdit) {
+        const isTouch = e instanceof TouchEvent;
+
+        if (e.buttons === 1 || e.buttons === 2 || isTouch) {
+            const x = isTouch ? e.touches[0].pageX : e.pageX;
+            const y = isTouch ? e.touches[0].pageY : e.pageY;
+
+            const { isErasing, offset } = state;
 
             const j = Math.floor((x - offset.x) / (config.cellSize + config.cellGap));
             const i = Math.floor((y - offset.y) / (config.cellSize + config.cellGap));
 
             if (checkIndex(i, j)) {
-                handleSwitchCell(i, j, e.buttons === 1);
+                handleSwitchCell(i, j, e.buttons === 1 || !isErasing);
             }
         }
     }
@@ -210,7 +217,7 @@ function initGeneration() {
     };
 }
 
-function init() {
+function initGUI() {
     function remake() {
         if (state.intervalId) {
             clearInterval(state.intervalId);
@@ -219,6 +226,7 @@ function init() {
         initGeneration();
         drawCells();
     }
+
     function playPause() {
         if (state.isPlaying) {
             state.intervalId = setInterval(() => {
@@ -229,6 +237,7 @@ function init() {
             clearInterval(state.intervalId);
         }
     }
+
     function rerun() {
         if (state.isPlaying) {
             clearInterval(state.intervalId);
@@ -250,6 +259,8 @@ function init() {
     gui.add(config, 'loopEdges').name('Loop Edges').listen();
     gui.add(config, 'liveEdit').name('Live Edit').listen();
 
+    gui.add(state, 'isErasing').name('Eraser').listen();
+
     const guides = gui.addFolder('Guides')
     const guidesList = guides.domElement.querySelector('ul');
     guidesList.appendChild(Object.assign(document.createElement('li'), { className: 'cr string', innerHTML: 'Reset [R]' }));
@@ -258,14 +269,23 @@ function init() {
     guidesList.appendChild(Object.assign(document.createElement('li'), { className: 'cr string', innerHTML: 'Loop Edges [L]' }));
     guidesList.appendChild(Object.assign(document.createElement('li'), { className: 'cr string', innerHTML: 'Play/Pause [Enter]' }));
     guidesList.appendChild(Object.assign(document.createElement('li'), { className: 'cr string', innerHTML: 'Hide Controls [H]' }));
+}
+
+function init() {
+    initGUI();
+
+    initGeneration();
+
+    drawCells();
 
     canvas.addEventListener('mousedown', handleMouse);
     canvas.addEventListener('mousemove', handleMouse);
+    canvas.addEventListener('touchstart', handleMouse);
+    canvas.addEventListener('touchmove', handleMouse);
+
     document.addEventListener('keydown', handleKeyboard);
 
     document.addEventListener('contextmenu', (e) => e.preventDefault());
-
-    remake();
 }
 
 init();
