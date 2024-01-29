@@ -184,9 +184,9 @@ function handleReset() {
 }
 
 function handleKeyboard(e) {
-    if (e.code === 'Enter') {
+    if (e.code === 'KeyP') {
         handlePlayPause();
-    } else if (e.code === 'Space') {
+    } else if (e.code === 'KeyS') {
         handleStep();
     } else if (e.code === 'KeyR') {
         handleReset();
@@ -264,10 +264,10 @@ function initGUI() {
     const guides = gui.addFolder('Guides')
     const guidesList = guides.domElement.querySelector('ul');
     guidesList.appendChild(Object.assign(document.createElement('li'), { className: 'cr string', innerHTML: 'Reset [R]' }));
-    guidesList.appendChild(Object.assign(document.createElement('li'), { className: 'cr string', innerHTML: 'Step [Space]' }));
+    guidesList.appendChild(Object.assign(document.createElement('li'), { className: 'cr string', innerHTML: 'Step [S]' }));
     guidesList.appendChild(Object.assign(document.createElement('li'), { className: 'cr string', innerHTML: 'Live Edit [E]' }));
     guidesList.appendChild(Object.assign(document.createElement('li'), { className: 'cr string', innerHTML: 'Loop Edges [L]' }));
-    guidesList.appendChild(Object.assign(document.createElement('li'), { className: 'cr string', innerHTML: 'Play/Pause [Enter]' }));
+    guidesList.appendChild(Object.assign(document.createElement('li'), { className: 'cr string', innerHTML: 'Play/Pause [P]' }));
     guidesList.appendChild(Object.assign(document.createElement('li'), { className: 'cr string', innerHTML: 'Hide Controls [H]' }));
 }
 
